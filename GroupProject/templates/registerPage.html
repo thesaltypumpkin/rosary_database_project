@@ -1,0 +1,37 @@
+<!-- a page for registeration, seperate from login, alternativly can be altered for other page later -->
+{% extends ".html" %}
+
+{% block content %}
+
+    
+     <!-- insert the page content here -->
+        <h1>Registration!</h1>
+        <form method="post" action="/login">
+        
+    <p>
+    Please fill in this form to sign up for our service!
+    </p>
+    
+    
+    <p>
+    <label for="First Name">First name:</label>
+    <input type="text" id="firstName" name="firstName" size="40" </p>
+    <p>
+    <p>
+    <label for="lastName">Last name:</label>
+    <input type="text" id="lastName" name="lastName" size="40" </p>
+    <p>    
+    <p>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" size="40" </p>
+    <p>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="pw" size="40" /></p>
+
+    <p><input type="submit" value="login" name="submit" /></p>
+  </form>
+        
+      
+      
+
+{% end block content %}
