@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Add Stock</h1>
+<form method = "POST" action="/stockupdate">
+<h3>Saints</h3>
+<table>
+    <tr><td>Saint:</td><td><input type='text' name='saint_update'/></td><td>Amount:</td><td><input type='number' name='saint_update_num' style='width: 50px'/></td></tr>
+</table>
+
+<h3>Beads</h3>
+<table>
+    <tr><td>Type of Bead:</td>
+    <td><select name='bead'>
+        <option value="Hail_Mary_Bead">Hail Mary Bead</option>
+        <option value="Our_Father_Bead">Our Father Bead</option>
+        <option value="Hope_Bead">Hope Bead</option>
+    </select></td></tr>
+    <tr><td>Material:</td><td><input type ='text' name='new_bead_material'/></td></tr>
+    <tr><td>Color:</td><td><input type ='text' name='new_bead_color'/></td></tr>
+    <tr><td>Amount:</td><td><input type ='number' name='new_bead_number' style='width: 50px'/></td></tr>
+</table>
+</form>
+
+
+
+{% endblock %}
