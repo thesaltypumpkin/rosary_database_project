@@ -3,7 +3,7 @@ CREATE DATABASE rosarydb;
 \c rosarydb;
 
 CREATE TABLE IF NOT EXISTS users(
-	id integer PRIMARY KEY,
+	id serial PRIMARY KEY,
 	first_name VARCHAR(30) NOT NULL,
 	last_name VARCHAR(40) NOT NULL,
 	is_admin BOOLEAN NOT NULL,
@@ -12,14 +12,14 @@ CREATE TABLE IF NOT EXISTS users(
 );
 
 CREATE TABLE IF NOT EXISTS stock(
-	id INTEGER PRIMARY KEY,
+	id serial PRIMARY KEY,
 	bead_color VARCHAR(16) NOT NULL,
 	quantity INTEGER NOT NULL,
 	price_per_bead INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS orders(
-	id INTEGER PRIMARY KEY,
+	id serial PRIMARY KEY,
 	primary_bead INTEGER REFERENCES stock(id),
 	secondary_bead INTEGER REFERENCES stock(id)
 );
