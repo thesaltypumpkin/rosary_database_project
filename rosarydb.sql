@@ -1,7 +1,7 @@
 DROP DATABASE rosarydb;
 CREATE DATABASE rosarydb;
 \c rosarydb;
-
+create extension pgcrypto;
 CREATE TABLE IF NOT EXISTS users(
 	id serial PRIMARY KEY,
 	first_name VARCHAR(30) NOT NULL,
