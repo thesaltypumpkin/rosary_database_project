@@ -19,15 +19,41 @@ def connect_to_dp():
 
 @app.route('/')
 def mainIndex():
-    return render_template('home.html')
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+        
+    return render_template('home.html', user = user)
 
 @app.route('/order')
 def order():
     return render_template('orderform.html')
     
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    con = connect_to_dp()
+    cur = con.cursor(cursor_factory = psycopg2.extras.DictCursor)
+    # if user typed in a post ...
+    if request.method == 'POST':
+        print "HI"
+        username = request.form['username']
+        pw = request.form['pw']
+        try: 
+            print 'got this far'
+            print cur.mogrify("select * from users WHERE username = %s' AND password = crypt(%s, password)", (username, pw))
+            cur.execute("select * from users WHERE username = %s AND password = crypt(%s, password)", (username, pw))
+        except:
+            print "no"
+        
+        if cur.fetchone():
+            session['currentUser'] = request.form['username']
+            currentUser = session['currentUser']
+            print currentUser
+            return redirect(url_for('mainIndex', user=currentUser))
+            
+    return render_template('logIn.html')
     
 @app.route('/about')
 def about():
@@ -49,6 +75,12 @@ def admin():
 def account():  
     con = connect_to_dp()
     cur = con.cursor(cursor_factory = psycopg2.extras.DictCursor)
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    
     pw =' '
     userName =' '
     firstName = ' '
@@ -70,7 +102,7 @@ def account():
         con.commit()
         return render_template('logIn.html')
         
-    return render_template('createAccount.html', selectedMenu='account', firstname = firstName, lastname = lastName, pw = pw, username = userName)
+    return render_template('createAccount.html', selectedMenu='account', firstname = firstName, lastname = lastName, pw = pw, username = userName, user = user)
    
 
 # start the server
