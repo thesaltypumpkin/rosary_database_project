@@ -29,7 +29,50 @@ def mainIndex():
 
 @app.route('/order')
 def order():
-    return render_template('orderform.html')
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    return render_template('orderform.html', user = user)
+
+@app.route('/ordercomplete', methods=['GET','POST'])   
+def ordercomplete():
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+        
+    con = connect_to_dp()
+    cur = con.cursor()
+    if request.method == 'POST':
+        try:
+            cur.execute("""INSERT INTO customorders (user_name, hail_mary, our_father, price)
+            VALUES (%s, %s, %s, %s);""",
+            (user, request.form['hail_mary_color'], request.form['our_father_color'], '40') )
+        except: 
+            print 'nope'
+            con.rollback()
+        con.commit()
+        print 'Order Added'
+        
+        try:
+            print(cur.mogrify("""INSERT INTO payment (user_name, first_name, last_name, home_address, city, state, zipcode, card_number)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);""",
+            (user, request.form['first_name'], request.form['last_name'], request.form['street'], request.form['city'],
+             request.form['state'], request.form['zipcode'], request.form['card_number'] ) ) )
+             
+            cur.execute("""INSERT INTO payment (user_name, first_name, last_name, home_address, city, state, zipcode, card_number)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);""",
+            (user, request.form['first_name'], request.form['last_name'], request.form['street'], request.form['city'],
+             request.form['state'], request.form['zipcode'], request.form['card_number'] ) )
+        except: 
+            print 'nope'
+            con.rollback()
+        con.commit()
+        
+    return render_template('ordercomplete.html', user = user )
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
