@@ -1,19 +1,14 @@
-
-Stop. 
-don't load this directly it will create a bunch of stuff you do not want. 
-
-
-
-Step One, copy these commands 
-
 DROP DATABASE rosarydb;
 CREATE DATABASE rosarydb;
 \c rosarydb;
 create extension pgcrypto;
 
-step 2, copy the next three tables
+DROP ROLE IF EXISTS db_manager; /*Creates a role with a password and appropriate access permissions for each table*/
+CREATE ROLE db_manager WITH LOGIN;
+ALTER ROLE db_manager WITH PASSWORD 'rosary';
 
-CREATE TABLE IF NOT EXISTS users(
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(
 	id serial PRIMARY KEY,
 	first_name VARCHAR(30) NOT NULL,
 	last_name VARCHAR(40) NOT NULL,
@@ -21,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users(
 	username VARCHAR(24) NOT NULL,
 	password TEXT NOT NULL
 );
-
+GRANT INSERT, SELECT ON users TO db_manager; /*Should db_manager also have DELETE and/or UPDATE, or should this be an admin-only power?*/
 
 drop table if exists customorders; 
 create table customorders ( 
@@ -31,6 +26,7 @@ create table customorders (
     our_father varchar(70),
     price INTEGER
 );
+GRANT INSERT, SELECT, DELETE ON customorders TO db_manager;
 
 drop table if exists payment;
 create table payment(
@@ -46,27 +42,28 @@ create table payment(
 	o_id bigint,
 	foreign key (o_id) references customorders(o_id)
 ); 
+GRANT INSERT, SELECT, DELETE ON payment TO db_manager;
 
-Step 3. Change the password in the connect to dp function in server to your own postgres 
-
-step 4.... ignore 
-
-CREATE TABLE IF NOT EXISTS stock(
+DROP TABLE IF EXISTS stock;
+CREATE TABLE stock(
 	id serial PRIMARY KEY,
 	bead_color VARCHAR(16) NOT NULL,
 	quantity INTEGER NOT NULL,
 	price_per_bead INTEGER NOT NULL
 );
+GRANT SELECT, UPDATE ON stock TO db_manager;
 
-
-CREATE TABLE IF NOT EXISTS orders(
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders(
 	id serial PRIMARY KEY,
 	primary_bead INTEGER REFERENCES stock(id),
 	secondary_bead INTEGER REFERENCES stock(id)
 );
+GRANT INSERT, SELECT ON orders TO db_manager;
 
-
-CREATE TABLE IF NOT EXISTS user_orders(
+DROP TABLE IF EXISTS user_orders;
+CREATE TABLE user_orders(
 	order_id INTEGER REFERENCES orders(id),
 	user_id INTEGER REFERENCES users(id)
 );
+GRANT INSERT ON user_orders TO db_manager;
