@@ -100,19 +100,39 @@ def login():
     
 @app.route('/about')
 def about():
-    return render_template('About.html')
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    return render_template('About.html', user = user)
     
 @app.route('/premade')
 def premade():
-    return render_template('PremadeItems.html')
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    return render_template('PremadeItems.html', user = user)
     
 @app.route('/catalog')
 def catalog():
-    return render_template('catalog.html')
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    return render_template('catalog.html', user = user)
     
 @app.route('/admin')
 def admin():
-    return render_template('Admin.html')
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    return render_template('Admin.html', user = user)
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():  

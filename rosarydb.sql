@@ -1,7 +1,18 @@
+
+Stop. 
+don't load this directly it will create a bunch of stuff you do not want. 
+
+
+
+Step One, copy these commands 
+
 DROP DATABASE rosarydb;
 CREATE DATABASE rosarydb;
 \c rosarydb;
 create extension pgcrypto;
+
+step 2, copy the next three tables
+
 CREATE TABLE IF NOT EXISTS users(
 	id serial PRIMARY KEY,
 	first_name VARCHAR(30) NOT NULL,
@@ -36,7 +47,10 @@ create table payment(
 	foreign key (o_id) references customorders(o_id)
 ); 
 
-	
+Step 3. Change the password in the connect to dp function in server to your own postgres 
+
+step 4.... ignore 
+
 CREATE TABLE IF NOT EXISTS stock(
 	id serial PRIMARY KEY,
 	bead_color VARCHAR(16) NOT NULL,
