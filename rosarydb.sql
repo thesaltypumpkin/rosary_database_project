@@ -28,7 +28,7 @@ create table customorders (
     price INTEGER
 );
 GRANT INSERT, SELECT, DELETE ON customorders TO db_manager;
-GRANT INSERT, SELECT, DELETE ON customorders_o_id_seq TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON customorders_o_id_seq TO db_manager;
 
 drop table if exists payment;
 create table payment(
@@ -45,7 +45,7 @@ create table payment(
 	foreign key (o_id) references customorders(o_id)
 ); 
 GRANT INSERT, SELECT, DELETE ON payment TO db_manager;
-GRANT INSERT, SELECT, DELETE ON payment_id_seq TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON payment_id_seq TO db_manager;
 
 DROP TABLE IF EXISTS stock;
 CREATE TABLE stock(
@@ -55,7 +55,7 @@ CREATE TABLE stock(
 	price_per_bead INTEGER NOT NULL
 );
 GRANT SELECT, UPDATE ON stock TO db_manager;
-GRANT SELECT, UPDATE ON stock_id_seq TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON stock_id_seq TO db_manager;
 
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
@@ -64,7 +64,7 @@ CREATE TABLE orders(
 	secondary_bead INTEGER REFERENCES stock(id)
 );
 GRANT INSERT, SELECT ON orders TO db_manager;
-GRANT INSERT, SELECT ON orders_id_seq TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON orders_id_seq TO db_manager;
 
 DROP TABLE IF EXISTS user_orders;
 CREATE TABLE user_orders(
