@@ -132,7 +132,16 @@ def admin():
         print "there is a currentuser"
         user = session['currentUser']
         print user
-    return render_template('Admin.html', user = user)
+    error = None;
+    if user['is_admin'] == True:
+        con = connect_to_dp()
+        cur = con.cursor()
+        cur.execute("select * from orders")
+        results = cur.fetchall()
+        return render_template('Admin.html', user = user, results = results)
+    else:
+        error = "You do not have the credentials to see this page"
+        return render_template('Admin.html', error = error)
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():  
