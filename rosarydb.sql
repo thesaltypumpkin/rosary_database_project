@@ -17,7 +17,7 @@ CREATE TABLE users(
 	password TEXT NOT NULL
 );
 GRANT INSERT, SELECT ON users TO db_manager; /*Should db_manager also have DELETE and/or UPDATE, or should this be an admin-only power?*/
-GRANT INSERT, SELECT ON users_id_seq TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON users_id_seq TO db_manager;
 
 drop table if exists customorders; 
 create table customorders ( 
