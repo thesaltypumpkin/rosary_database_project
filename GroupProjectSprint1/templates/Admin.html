@@ -2,14 +2,14 @@
 
 {% block content %}
 
-<p>{{error}}</p>
+
 
 <h2>Orders</h2>
 <table>
     
-    <tr><td>Order ID</td><td>Primary Bead</td><td>Secondary Bead</td></tr>
+    <tr><td>Order ID</td><td>Username</td><td>Hail Mary</td><td>Our Father</td><td>Price</td></tr>
     {% for c in results %}
-    <tr><td>{{c[0]}}</td><td>{{c[1]}}</td><td>{{c[2]}}</td></tr>
+    <tr><td>{{c[0]}}</td><td>{{c[1]}}</td><td>{{c[2]}}</td><td>{{c[3]}}</td><td>{{c[4]}}</td></tr>
     {% endfor %}
 </table>
 
