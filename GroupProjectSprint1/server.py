@@ -9,7 +9,7 @@ app.secret_key = os.urandom(24).encode('hex')
 
  
 def connect_to_dp(): 
-    connectionString = 'dbname = rosarydb user = postgres password = 12345 host = localhost'
+    connectionString = 'dbname = rosarydb user = db_manager password = rosary host = localhost'
     print connectionString
     try: 
         return psycopg2.connect(connectionString)
