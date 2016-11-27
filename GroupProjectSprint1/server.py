@@ -14,7 +14,7 @@ def connect_to_dp():
     try: 
         return psycopg2.connect(connectionString)
     except: 
-        print('nope')
+        print("Can't connect to database")
 
 
 @app.route('/')
@@ -163,10 +163,10 @@ def account():
         lastName = request.form['lastname']
         firstName = request.form['firstname']
         try:
-            print cur.mogrify("INSERT INTO users (first_name, last_name, is_admin, username, password) VALUES (%s, %s, 'True', %s, crypt(%s, gen_salt('bf')));", (firstName, lastName, userName, pw))
+            print cur.mogrify("INSERT INTO users (first_name, last_name, is_admin, username, password) VALUES (%s, %s, True, %s, crypt(%s, gen_salt('bf')));", (firstName, lastName, userName, pw))
             cur.execute("INSERT INTO users (first_name, last_name, is_admin, username, password) VALUES (%s, %s, 'True', %s, crypt(%s, gen_salt('bf')));", (firstName, lastName, userName, pw))
         except: 
-            print "suck it nerd"
+            print "Error: could not insert new user into database"
             con.rollback()
         con.commit()
         return render_template('logIn.html')
