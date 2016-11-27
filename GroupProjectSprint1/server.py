@@ -52,7 +52,7 @@ def ordercomplete():
             VALUES (%s, %s, %s, %s);""",
             (user, request.form['hail_mary_color'], request.form['our_father_color'], '40') )
         except: 
-            print 'nope'
+            print 'Error: could not add order to the database'
             con.rollback()
         con.commit()
         print 'Order Added'
@@ -68,7 +68,7 @@ def ordercomplete():
             (user, request.form['first_name'], request.form['last_name'], request.form['street'], request.form['city'],
              request.form['state'], request.form['zipcode'], request.form['card_number'] ) )
         except: 
-            print 'nope'
+            print 'Error: could not add payment method to the database'
             con.rollback()
         con.commit()
         
@@ -80,15 +80,14 @@ def login():
     cur = con.cursor(cursor_factory = psycopg2.extras.DictCursor)
     # if user typed in a post ...
     if request.method == 'POST':
-        print "HI"
+        print "User sent a POST request"
         username = request.form['username']
         pw = request.form['pw']
         try: 
-            print 'got this far'
             print cur.mogrify("select * from users WHERE username = %s' AND password = crypt(%s, password)", (username, pw))
             cur.execute("select * from users WHERE username = %s AND password = crypt(%s, password)", (username, pw))
         except:
-            print "no"
+            print "Error: could not retrieve user info"
         
         if cur.fetchone():
             session['currentUser'] = request.form['username']
