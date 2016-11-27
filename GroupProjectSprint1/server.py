@@ -156,7 +156,7 @@ def account():
     admin = True
     
     if request.method == 'POST':
-        print "post"
+        print "User sent a POST request"
         userName = request.form['username']
         pw = request.form['pw']
         lastName = request.form['lastname']
