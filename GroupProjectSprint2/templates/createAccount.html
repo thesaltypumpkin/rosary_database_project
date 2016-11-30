@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+        <h1>create account</h1>
+        <form method="post" action="/account">
+          
+    <p>
+    <label for="firstname">First Name:</label>
+    <input type="text" id="firstname" name="firstname" size="40" </p> 
+    <p>
+    <label for="lastname">Last Name:</label>
+    <input type="text" id="lastname" name="lastname" size="40" </p>
+    <p>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" size="40" </p>
+    <p>
+    <label for="password">Password:</label>
+    <input type="password" id="pw" name="pw" size="40" /></p>
+
+    <p><input type="submit" value="create" name="submit" /></p>
+  </form>
+  
+{% endblock %}        
+      

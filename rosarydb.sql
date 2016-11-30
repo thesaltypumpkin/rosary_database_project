@@ -47,15 +47,36 @@ create table payment(
 GRANT INSERT, SELECT, DELETE ON payment TO db_manager;
 GRANT USAGE, SELECT, UPDATE ON payment_id_seq TO db_manager;
 
-DROP TABLE IF EXISTS stock;
-CREATE TABLE stock(
+DROP TABLE IF EXISTS stock_bead;
+CREATE TABLE stock_bead(
 	id serial PRIMARY KEY,
 	bead_color VARCHAR(16) NOT NULL,
 	quantity INTEGER NOT NULL,
 	price_per_bead INTEGER NOT NULL
 );
-GRANT SELECT, UPDATE ON stock TO db_manager;
-GRANT USAGE, SELECT, UPDATE ON stock_id_seq TO db_manager;
+GRANT SELECT, UPDATE ON stock_bead TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON stock_bead_id_seq TO db_manager;
+
+DROP TABLE IF EXISTS stock_center_piece;
+Create table stock_center_piece(
+	id serial PRIMARY KEY,
+	centerpiece_type VARCHAR(16) NOT NULL,
+	quantity INTEGER NOT NULL,
+	price_per_center_piece INTEGER NOT NULL
+);
+GRANT SELECT, UPDATE ON stock_center_piece TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON stock_center_piece_id_seq TO db_manager;
+
+DROP TABLE IF EXISTS stock_crucifix;
+Create table stock_crucifix(
+	id serial PRIMARY KEY,
+	crucifix_type VARCHAR(16) NOT NULL,
+	quantity INTEGER NOT NULL,
+	price_per_crucifix INTEGER NOT NULL
+);
+GRANT SELECT, UPDATE ON stock_crucifix TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON stock_crucifix_id_seq TO db_manager;
+
 
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
