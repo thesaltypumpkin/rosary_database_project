@@ -21,9 +21,9 @@
     }
     
   .carousel-inner img {
-      width: 80%; /* Set width to 100% */
+      width: 100%; /* Set width to 100% */
       margin: auto;
-      min-height:100px;
+      min-height:200px;
   }
 
   /* Hide the carousel text when the screen is less than 600 pixels wide */
@@ -44,16 +44,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Custom Rosaries INC.</a>
+      <a class="navbar-brand" href="#">Logo</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/account">Create Account</a></li>
-        <li><a href="/order">Order</a></li>
-        <li><a href="/login">login</a></li>
-        <li>Welcome, {{user}}</li>   <!--This href only exists to make things look pretty, should be removed or made functional for Sprint 2-->
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -73,24 +71,28 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
       <div class="item active">
-        <img  src="static/Image/rosary.JPG" style=width:25%;height:25% alt="Image">
+        <img src="https://placehold.it/1200x400?text=IMAGE" alt="Image">
         <div class="carousel-caption">
-          <h3>Custom Rosaries</h3>
+          <h3>Rosaries for sale </h3>
+          <p>A lovely 'insert gemstone here'rosari!.</p>
         </div>
       </div>
+
       <div class="item">
-        <img height='50%' src="static/Image/rosary2.jpg" style=width:25%;height:25% alt="Image">
+        <img src="https://placehold.it/1200x400?text=Another Image Maybe" alt="Image">
         <div class="carousel-caption">
-          <h3>Custom Rosaries</h3>
+          <h3>A Really Nice rosari </h3>
+          <p>Another pictuer of a rosari</p>
         </div>
       </div>
-       <div class="item">
-        <img height='50%' src="static/Image/rosary3.jpg" style=width:25%;height:25% alt="Image">
+      
+      <div class="item">
+        <img src="https://placehold.it/1200x400?text=Another Image Maybe" alt="Image">
         <div class="carousel-caption">
-          <h3>Custom Rosaries</h3>
+          <h3>A thrid image I'm using for testing</h3>
+          <p>Here's hoping it works</p>
+          </div>
         </div>
-      </div>
-    </div>
         
     </div>
 
@@ -104,10 +106,10 @@
       <span class="sr-only">Next</span>
     </a>
 </div>
-  
-<div class="container text-center">
-    {% block content %}{% endblock %}
-</div><br>
+
+<!--Add code for displaying products-->
+
+
 
 <footer class="container-fluid text-center">
   <p>Template taken from bootstrap. Project by </p>
@@ -115,4 +117,3 @@
 
 </body>
 </html>
-
