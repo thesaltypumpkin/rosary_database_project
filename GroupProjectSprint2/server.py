@@ -145,7 +145,14 @@ def admin():
     
     con = connect_to_dp()
     cur = con.cursor()
-    cur.execute("select payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name);")
+    cur.execute("select distinct payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name);")
+    results2 = cur.fetchall()
+    if (len(results2) / 2 == 0):
+        resultlen = len(results2) / 2;
+    else:
+        resultlen = len(results2) / 2 + 1;
+    print(resultlen)
+    cur.execute("select distinct payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name) limit %s;" % (resultlen))
     results = cur.fetchall()
     if request.method == 'POST':
         print("post admin")
@@ -161,7 +168,7 @@ def admin():
             print cur.mogrify("update stock_crucifix set quantity = quantity + %s where crucifix_type = '%s'" % (request.form['cx_amount'], request.form['cx_type']))
             cur.execute("update stock_crucifix set quantity = quantity + %s where crucifix_type = '%s'" % (request.form['cx_amount'], request.form['cx_type']))
             con.commit()
-    return render_template('Admin.html', user = user, results = results)
+    return render_template('Admin.html', user = user, results = results, resultlen = resultlen)
     
 
 @app.route('/account', methods=['GET', 'POST'])
