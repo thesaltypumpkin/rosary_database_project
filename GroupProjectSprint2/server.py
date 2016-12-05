@@ -8,8 +8,12 @@ from flask_socketio import SocketIO, emit
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = os.urandom(24).encode('hex')
+app.config['SECRET_KEY'] = 'secret!'
+
 socketio = SocketIO(app)
- 
+
+prayer = [ {'text':'my mom'}, {'text':'my dad'}]
+
 def connect_to_dp(): 
     connectionString = 'dbname = rosarydb user = db_manager password = rosary host = localhost'
     print connectionString
@@ -18,8 +22,11 @@ def connect_to_dp():
     except: 
         print("Can't connect to database")
 
-messages = [{'star': "1", 'review': 'this is shit'}, {'star': "5", 'review': 'best rosary ever'}]
-
+@socketio.on('connect', namespace = '/rosary')
+def makeConnection(): 
+        print('connected')
+        for p in prayer:
+            emit('prayer', p)
 
 @app.route('/')
 def mainIndex():
@@ -203,4 +210,4 @@ def review():
     
 # start the server
 if __name__ == '__main__':
-    app.run(host=os.getenv('IP', '0.0.0.0'), port =int(os.getenv('PORT', 8080)), debug=True)
+    socketio.run(app, host=os.getenv('IP', '0.0.0.0'), port =int(os.getenv('PORT', 8080)), debug=True)

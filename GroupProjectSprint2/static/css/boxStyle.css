@@ -33,3 +33,10 @@ table { border-collapse: separate; border-spacing: 5px; }
 th, td {
     padding: 10px;
 }
+
+div.scroll {
+    background-color: #F8F8F8;
+    width: 250px;
+    height: 200px;
+    overflow: scroll;
+}

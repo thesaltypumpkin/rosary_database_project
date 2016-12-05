@@ -1,18 +1,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
- <div class="container" ng-controller="ChatController">
+ <div class="container" ng-controller="rosaryControler">
 
- <<body>
-  <div class="container" ng-controller="ChatController">
+ <body>
+  <div class="container" ng-controller="rosaryControler">
 
     <div class="wrapper" >
       <header>
-        <h1>Review</h1>
+        <h1>Prayer Intentions</h1>
         <div class="scroll" id="msgpane">
-           <p ng-repeat="msg in messages"> 
-             <b ng-bind='msg.name'></b>:&nbsp; 
-             <span ng-bind="msg.text"></span>
+         <p ng-repeat="p in prayer"> 
+             <span ng-bind="p.text"></span>
             </p>
          
          
