@@ -3,10 +3,12 @@ import psycopg2.extras
 
 
 from flask import Flask, render_template, request, session, redirect, url_for
+from flask_socketio import SocketIO, emit
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_url_path='')
 app.secret_key = os.urandom(24).encode('hex')
-
+socketio = SocketIO(app)
  
 def connect_to_dp(): 
     connectionString = 'dbname = rosarydb user = db_manager password = rosary host = localhost'
@@ -15,6 +17,8 @@ def connect_to_dp():
         return psycopg2.connect(connectionString)
     except: 
         print("Can't connect to database")
+
+messages = [{'star': "1", 'review': 'this is shit'}, {'star': "5", 'review': 'best rosary ever'}]
 
 
 @app.route('/')
@@ -172,7 +176,17 @@ def account():
         
     return render_template('createAccount.html', selectedMenu='account', firstname = firstName, lastname = lastName, pw = pw, username = userName, user = user)
    
-
+   
+@app.route('/review')
+def review():
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    
+    return render_template('review.html')
+    
 # start the server
 if __name__ == '__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'), port =int(os.getenv('PORT', 8080)), debug=True)
