@@ -25,6 +25,8 @@ create table customorders (
     user_name varchar(24),
     hail_mary varchar(70),
     our_father varchar(70),
+    Crucifix varchar(16),
+    center_piece varchar(16),
     price INTEGER
 );
 GRANT INSERT, SELECT, DELETE ON customorders TO db_manager;
@@ -45,7 +47,7 @@ create table payment(
 	foreign key (o_id) references customorders(o_id)
 ); 
 GRANT INSERT, SELECT, DELETE ON payment TO db_manager;
-GRANT USAGE, SELECT, UPDATE ON payment_id_seq TO db_manager;
+GRANT USAGE, SELECT, UPDATE ON payment_p_id_seq TO db_manager;
 
 DROP TABLE IF EXISTS stock_bead;
 CREATE TABLE stock_bead(
@@ -81,8 +83,10 @@ GRANT USAGE, SELECT, UPDATE ON stock_crucifix_id_seq TO db_manager;
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
 	id serial PRIMARY KEY,
-	primary_bead INTEGER REFERENCES stock(id),
-	secondary_bead INTEGER REFERENCES stock(id)
+	primary_bead INTEGER REFERENCES stock_bead(id),
+	secondary_bead INTEGER REFERENCES stock_bead(id),
+	center_piece INTEGER REFERENCES stock_center_piece(id),
+	crucifix INTEGER REFERENCES stock_crucifix(id)
 );
 GRANT INSERT, SELECT ON orders TO db_manager;
 GRANT USAGE, SELECT, UPDATE ON orders_id_seq TO db_manager;

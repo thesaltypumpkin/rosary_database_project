@@ -3,28 +3,41 @@
 {% block content %}
 
 
-
+<center>
 <h2>Orders</h2>
 <table>
-    
-    <tr><td>Order ID</td><td>Username</td><td>Hail Mary</td><td>Our Father</td><td>Price</td></tr>
+    <tr><td>First</td><td>Last</td><td>address</td><td>city</td><td>zip</td><td>card</td><td>Username</td><td>Hail Mary</td><td>Our Father</td><td>Crucifix</td><td>Centerpiece</td><td>Price</td></tr>
     {% for c in results %}
-    <tr><td>{{c[0]}}</td><td>{{c[1]}}</td><td>{{c[2]}}</td><td>{{c[3]}}</td><td>{{c[4]}}</td></tr>
+    <tr><td>{{c[0]}}</td><td>{{c[1]}}</td><td>{{c[2]}}</td><td>{{c[3]}}</td><td>{{c[4]}}</td><td>{{c[5]}}</td><td>{{c[6]}}</td><td>{{c[7]}}</td><td>{{c[8]}}</td><td>{{c[9]}}</td><td>{{c[10]}}</td><td>{{c[11]}}</td></tr>
     {% endfor %}
 </table>
 
 
 
 <form method = "POST">
-<h3>Beads</h3>
+<h2>Stock</h2>
 <table>
-    <tr><td>Bead Type</td><td><input type ='text' name='new_bead_color'/></td></tr>
-    <tr><td>Amount:</td><td><input type ='number' name='new_bead_number' style='width: 50px'/></td></tr>
-    <tr><td>Price per bead:</td><td><input type ='number' name='new_bead_number' style='width: 50px'/></td></tr>
-    <tr><td><input type="submit" value="Update Stock" name="submit" /></td></tr>
+    <h3>Beads in Stock</h3>
+    <tr><td>Bead Type:</td><td><input type ='text' name='bead_color'/></td></tr>
+    <tr><td>Amount:</td><td><input type ='number' name='bead_number' style='width: 50px'/></td></tr>
+    <tr><td><input type="submit" value="Update Bead" name="bsubmit" /></td></tr>
+</table>
+
+<table>
+    <h3>Center Piece in Stock</h3>
+    <tr><td>Type:</td><td><input type='text' name='cp_type'/></td></tr>
+    <tr><td>Amount:</td><td><input type='text' name='cp_amount' style='width: 50px'/></td></tr>
+    <tr><td><input type="submit" value="update centerpiece" name="cpsubmit" /></td></tr>
+</table>
+<table>
+    <h3>Crucifix in Stock</h3>
+    <tr><td>Type:</td><td><input type='text' name='cx_type'/></td></tr>
+    <tr><td>Amount:</td><td><input type='text' name='cx_amount' style='width: 50px'/></td></tr>
+    <tr><td><input type="submit" value="update crucifix" name="cxsubmit" /></td></tr>    
+    
 </table>
 </form>
 
-
+</center>
 
 {% endblock %}
