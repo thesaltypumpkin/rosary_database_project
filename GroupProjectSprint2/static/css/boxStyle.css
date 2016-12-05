@@ -31,5 +31,5 @@ input[type=button], input[type=submit], input[type=reset] {
 table { border-collapse: separate; border-spacing: 5px; }
 
 th, td {
-    padding: 20px;
+    padding: 10px;
 }

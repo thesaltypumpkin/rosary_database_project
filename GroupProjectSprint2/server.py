@@ -142,7 +142,14 @@ def admin():
             print cur.mogrify("update stock_bead set quantity = quantity + %s where bead_color = '%s'" % (request.form['bead_number'], request.form['bead_color']))
             cur.execute("update stock_bead set quantity = quantity + %s where bead_color = '%s'" % (request.form['bead_number'], request.form['bead_color']))
             con.commit()
-        
+        elif request.form['submit'] == "update centerpiece":
+            print cur.mogrify("update stock_center_piece set quantity = quantity + %s where centerpiece_type = '%s'" % (request.form['cp_amount'], request.form['cp_type']))
+            cur.execute("update stock_center_piece set quantity = quantity + %s where centerpiece_type = '%s'" % (request.form['cp_amount'], request.form['cp_type']))
+            con.commit()
+        elif request.form['submit'] == "update crucifix":
+            print cur.mogrify("update stock_crucifix set quantity = quantity + %s where crucifix_type = '%s'" % (request.form['cx_amount'], request.form['cx_type']))
+            cur.execute("update stock_crucifix set quantity = quantity + %s where crucifix_type = '%s'" % (request.form['cx_amount'], request.form['cx_type']))
+            con.commit()
     return render_template('Admin.html', user = user, results = results)
     
 
