@@ -48,9 +48,9 @@ def ordercomplete():
     cur = con.cursor()
     if request.method == 'POST':
         try:
-            cur.execute("""INSERT INTO customorders (user_name, hail_mary, our_father, price)
-            VALUES (%s, %s, %s, %s);""",
-            (user, request.form['hail_mary_color'], request.form['our_father_color'], '40') )
+            cur.execute("""INSERT INTO customorders (user_name, hail_mary, our_father, Crucifix, center_piece, price)
+            VALUES (%s, %s, %s, %s, %s, %s);""",
+            (user, request.form['hail_mary_color'], request.form['our_father_color'], request.form['crucifix'], request.form['centerpiece'], '40') )
         except: 
             print 'Error: could not add order to the database'
             con.rollback()
@@ -84,7 +84,7 @@ def login():
         username = request.form['username']
         pw = request.form['pw']
         try: 
-            print cur.mogrify("select * from users WHERE username = %s' AND password = crypt(%s, password)", (username, pw))
+            print cur.mogrify("select * from users WHERE username = %s AND password = crypt(%s, password)", (username, pw))
             cur.execute("select * from users WHERE username = %s AND password = crypt(%s, password)", (username, pw))
         except:
             print "Error: could not retrieve user info"
@@ -124,7 +124,7 @@ def catalog():
         print user
     return render_template('catalog.html', user = user)
     
-@app.route('/admin')
+@app.route('/admin', methods = ['GET', 'POST'])
 def admin():
     user = ' '
     if 'currentUser' in session: 
@@ -134,8 +134,13 @@ def admin():
     
     con = connect_to_dp()
     cur = con.cursor()
-    cur.execute("select * from customorders")
+    cur.execute("select payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name);")
     results = cur.fetchall()
+    if request.methods == 'POST':
+        print("post admin")
+        if request.form['submit'] == "Update Bead":
+            cur.mogrify("")
+        
     return render_template('Admin.html', user = user, results = results)
     
 

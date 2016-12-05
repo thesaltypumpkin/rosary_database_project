@@ -25,6 +25,8 @@ create table customorders (
     user_name varchar(24),
     hail_mary varchar(70),
     our_father varchar(70),
+    Crucifix varchar(16),
+    center_piece varchar(16),
     price INTEGER
 );
 GRANT INSERT, SELECT, DELETE ON customorders TO db_manager;
