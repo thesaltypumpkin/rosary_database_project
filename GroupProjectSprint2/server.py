@@ -136,10 +136,12 @@ def admin():
     cur = con.cursor()
     cur.execute("select payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name);")
     results = cur.fetchall()
-    if request.methods == 'POST':
+    if request.method == 'POST':
         print("post admin")
         if request.form['submit'] == "Update Bead":
-            cur.mogrify("")
+            print cur.mogrify("update stock_bead set quantity = quantity + %s where bead_color = '%s'" % (request.form['bead_number'], request.form['bead_color']))
+            cur.execute("update stock_bead set quantity = quantity + %s where bead_color = '%s'" % (request.form['bead_number'], request.form['bead_color']))
+            con.commit()
         
     return render_template('Admin.html', user = user, results = results)
     
