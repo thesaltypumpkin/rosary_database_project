@@ -27,7 +27,15 @@ def makeConnection():
         prayer = [ {'text':'my mom'}, {'text':'my dad'}]
         print('connected')
         for p in prayer:
+            print(p)
             emit('prayer', p)
+            
+@socketio.on('message', namespace = '/rosary')
+def new_prayer(message): 
+    tmp = {'text': message}
+    print(tmp)
+    prayer.append(tmp)
+    emit('prayer', tmp, broadcast=True)
 
 @app.route('/')
 def mainIndex():
