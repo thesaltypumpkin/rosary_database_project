@@ -24,6 +24,7 @@ def connect_to_dp():
 
 @socketio.on('connect', namespace = '/rosary')
 def makeConnection(): 
+        prayer = [ {'text':'my mom'}, {'text':'my dad'}]
         print('connected')
         for p in prayer:
             emit('prayer', p)
