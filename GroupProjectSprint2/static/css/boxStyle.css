@@ -55,6 +55,13 @@ display:inline-block;
 height:350px;
 }
 
+.carusel-inner img{
+width:5%;
+margin:auto;
+min-height:100px;
+
+}
+
 div.scroll {
     background-color: #F8F8F8;
     width: 250px;
