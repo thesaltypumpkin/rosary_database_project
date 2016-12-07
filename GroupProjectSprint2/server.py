@@ -14,7 +14,7 @@ socketio = SocketIO(app)
 
 prayer = [{'text':'my mom'}, {'text':'my dad'}]
 
-def connect_to_dp(): 
+def connect_to_db(): 
     connectionString = 'dbname = rosarydb user = db_manager password = rosary host = localhost'
     print connectionString
     try: 
@@ -53,7 +53,13 @@ def order():
         print "there is a currentuser"
         user = session['currentUser']
         print user
-    return render_template('orderform.html', user = user)
+    empty_rosary = {
+        'hail_mary': '',
+        'our_father': '',
+        'crucifix': '',
+        'centerpiece': ''
+    }
+    return render_template('orderform.html', user = user, rosary = empty_rosary)
 
 @app.route('/ordercomplete', methods=['GET','POST'])   
 def ordercomplete():
@@ -63,11 +69,11 @@ def ordercomplete():
         user = session['currentUser']
         print user
         
-    con = connect_to_dp()
+    con = connect_to_db()
     cur = con.cursor()
     if request.method == 'POST':
         try:
-            cur.execute("""INSERT INTO customorders (user_name, hail_mary, our_father, Crucifix, center_piece, price)
+            cur.execute("""INSERT INTO customorders (user_name, hail_mary, our_father, crucifix, center_piece, price)
             VALUES (%s, %s, %s, %s, %s, %s);""",
             (user, request.form['hail_mary_color'], request.form['our_father_color'], request.form['crucifix'], request.form['centerpiece'], '40') )
         except: 
@@ -95,7 +101,7 @@ def ordercomplete():
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    con = connect_to_dp()
+    con = connect_to_db()
     cur = con.cursor(cursor_factory = psycopg2.extras.DictCursor)
     # if user typed in a post ...
     if request.method == 'POST':
@@ -125,15 +131,6 @@ def about():
         print user
     return render_template('About.html', user = user)
     
-@app.route('/premade')
-def premade():
-    user = ' '
-    if 'currentUser' in session: 
-        print "there is a currentuser"
-        user = session['currentUser']
-        print user
-    return render_template('PremadeItems.html', user = user)
-    
 @app.route('/catalog')
 def catalog():
     user = ' '
@@ -141,8 +138,89 @@ def catalog():
         print "there is a currentuser"
         user = session['currentUser']
         print user
-    return render_template('catalog.html', user = user)
     
+    con = connect_to_db()
+    cur = con.cursor()
+    
+    rosaries = []
+    
+    query = cur.mogrify("SELECT primary_bead, secondary_bead, center_piece, crucifix, image FROM orders ORDER BY id;")
+    cur.execute(query)
+    results = cur.fetchall()
+    
+    for result in results:
+        print(str(result[0]) + " " + str(result[1]) + " " + str(result[2]) + " " + str(result[3]) + " " + result[4])
+    
+    for result in results:
+        total_price = 0
+        
+        query = cur.mogrify("SELECT bead_color, price_per_bead FROM stock_bead WHERE id = '%s';" % (result[0],))
+        cur.execute(query)
+        current_info = cur.fetchall()[0]
+        primary_bead = current_info[0]
+        total_price += current_info[1] * 30
+        
+        query = cur.mogrify("SELECT bead_color, price_per_bead FROM stock_bead WHERE id = '%s';" % (result[1],))
+        cur.execute(query)
+        current_info = cur.fetchall()[0]
+        secondary_bead = current_info[0]
+        total_price += current_info[1] * 8
+        
+        query = cur.mogrify("SELECT centerpiece_type, price_per_center_piece FROM stock_center_piece WHERE id = '%s';" % (result[2],))
+        cur.execute(query)
+        current_info = cur.fetchall()[0]
+        center_piece = current_info[0]
+        total_price += current_info[1]
+        
+        query = cur.mogrify("SELECT crucifix_type, price_per_crucifix FROM stock_crucifix WHERE id = '%s';" % (result[3],))
+        cur.execute(query)
+        current_info = cur.fetchall()[0]
+        crucifix = current_info[0]
+        total_price += current_info[1]
+        
+        rosaries.append({
+            'primary_bead': primary_bead,
+            'secondary_bead': secondary_bead,
+            'center_piece': center_piece,
+            'crucifix': crucifix,
+            'image': "static/Image/" + result[4],
+            'price': total_price
+        })
+    
+    return render_template('catalog.html', user = user, rosaries = rosaries)
+	
+@app.route('/buy', methods=['GET','POST'])
+def submit():
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    
+    if request.method == 'POST':
+        print "User sent a POST request"
+        
+        rosary = {
+            'hail_mary': request.form['primary_bead'],
+            'our_father': request.form['secondary_bead'],
+            'centerpiece': request.form['center_piece'],
+            'crucifix': request.form['crucifix']
+        }
+        
+        return render_template('orderform.html', user = user, rosary = rosary)
+    
+    print("Something went wrong; redirecting user to empty order form")
+    
+    empty_rosary = {
+        'hail_mary': '',
+        'our_father': '',
+        'crucifix': '',
+        'centerpiece': ''
+    }
+    
+    return render_template('orderform.html', user = user, rosary = empty_rosary)
+	
+	
 @app.route('/admin', methods = ['GET', 'POST'])
 def admin():
     user = ' '
@@ -151,7 +229,7 @@ def admin():
         user = session['currentUser']
         print user
     
-    con = connect_to_dp()
+    con = connect_to_db()
     cur = con.cursor()
     cur.execute("select distinct payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name);")
     results2 = cur.fetchall()
@@ -181,7 +259,7 @@ def admin():
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():  
-    con = connect_to_dp()
+    con = connect_to_db()
     cur = con.cursor(cursor_factory = psycopg2.extras.DictCursor)
     user = ' '
     if 'currentUser' in session: 
