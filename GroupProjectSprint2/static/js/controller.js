@@ -7,6 +7,7 @@ rosary.controller('rosaryControler', function($scope){
     $scope.text = '';
     
     socket.on('prayer', function(p){ 
+        console.log($scope.prayer);
         console.log(p); 
         $scope.prayer.push(p); 
         $scope.$apply();
