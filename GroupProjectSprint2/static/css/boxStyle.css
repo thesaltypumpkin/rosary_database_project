@@ -30,7 +30,6 @@ input[type=button], input[type=submit], input[type=reset] {
 
 table { border-collapse: separate; border-spacing: 5px; }
 
-<<<<<<< HEAD
 th, td {
     padding: 10px;
 }
@@ -48,7 +47,6 @@ text-align:left;
 font-size:25;
 padding:3pt,5pt,10pt,6pt;
 }
-=======
 
 .carusel-control{
 position:absoulute;
@@ -63,4 +61,4 @@ div.scroll {
     height: 200px;
     overflow: scroll;
 }
->>>>>>> da887bbbd7277820f52d1e5f949a1999aeb5877b
+
