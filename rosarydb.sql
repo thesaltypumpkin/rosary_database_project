@@ -22,12 +22,12 @@ GRANT USAGE, SELECT, UPDATE ON users_id_seq TO db_manager;
 drop table if exists customorders; 
 create table customorders ( 
 	o_id serial primary key,
-    user_name varchar(24),
-    hail_mary varchar(70),
-    our_father varchar(70),
-    Crucifix varchar(16),
-    center_piece varchar(16),
-    price INTEGER
+    user_name varchar(24) NOT NULL,
+    hail_mary varchar(70) NOT NULL,
+    our_father varchar(70) NOT NULL,
+    crucifix varchar(16) NOT NULL,
+    center_piece varchar(16) NOT NULL,
+    price NUMERIC NOT NULL
 );
 GRANT INSERT, SELECT, DELETE ON customorders TO db_manager;
 GRANT USAGE, SELECT, UPDATE ON customorders_o_id_seq TO db_manager;
@@ -36,8 +36,8 @@ drop table if exists payment;
 create table payment(
 	p_id serial primary key,
 	user_name varchar(24) not null,
-	first_name varchar(30),
-	last_name varchar(40),
+	first_name varchar(30) NOT NULL,
+	last_name varchar(40) NOT NULL,
 	home_address text not null, 
 	city text not null, 
 	state text not null, 
@@ -54,31 +54,43 @@ CREATE TABLE stock_bead(
 	id serial PRIMARY KEY,
 	bead_color VARCHAR(16) NOT NULL,
 	quantity INTEGER NOT NULL,
-	price_per_bead INTEGER NOT NULL
+	price_per_bead NUMERIC NOT NULL
 );
 GRANT SELECT, UPDATE ON stock_bead TO db_manager;
 GRANT USAGE, SELECT, UPDATE ON stock_bead_id_seq TO db_manager;
+
+INSERT INTO stock_bead (bead_color, quantity, price_per_bead) VAlUES ('Ruby', 100, 0.50);
+INSERT INTO stock_bead (bead_color, quantity, price_per_bead) VAlUES ('Sapphire', 200, 0.50);
+INSERT INTO stock_bead (bead_color, quantity, price_per_bead) VAlUES ('Amber', 150, 0.50);
+INSERT INTO stock_bead (bead_color, quantity, price_per_bead) VAlUES ('Aquamarine', 225, 0.50);
 
 DROP TABLE IF EXISTS stock_center_piece;
 Create table stock_center_piece(
 	id serial PRIMARY KEY,
 	centerpiece_type VARCHAR(16) NOT NULL,
 	quantity INTEGER NOT NULL,
-	price_per_center_piece INTEGER NOT NULL
+	price_per_center_piece NUMERIC NOT NULL
 );
 GRANT SELECT, UPDATE ON stock_center_piece TO db_manager;
 GRANT USAGE, SELECT, UPDATE ON stock_center_piece_id_seq TO db_manager;
+
+INSERT INTO stock_center_piece (centerpiece_type, quantity, price_per_center_piece) VALUES ('Titanium', 20, 12.00);
+INSERT INTO stock_center_piece (centerpiece_type, quantity, price_per_center_piece) VALUES ('Michael', 40, 10.50);
+INSERT INTO stock_center_piece (centerpiece_type, quantity, price_per_center_piece) VALUES ('Virgin Mary', 45, 9.50);
 
 DROP TABLE IF EXISTS stock_crucifix;
 Create table stock_crucifix(
 	id serial PRIMARY KEY,
 	crucifix_type VARCHAR(16) NOT NULL,
 	quantity INTEGER NOT NULL,
-	price_per_crucifix INTEGER NOT NULL
+	price_per_crucifix NUMERIC NOT NULL
 );
 GRANT SELECT, UPDATE ON stock_crucifix TO db_manager;
 GRANT USAGE, SELECT, UPDATE ON stock_crucifix_id_seq TO db_manager;
 
+INSERT INTO stock_crucifix (crucifix_type, quantity, price_per_crucifix) VALUES ('24k Gold', 20, 11.50);
+INSERT INTO stock_crucifix (crucifix_type, quantity, price_per_crucifix) VALUES ('Ruby', 30, 20.00);
+INSERT INTO stock_crucifix (crucifix_type, quantity, price_per_crucifix) VALUES ('Silver', 25, 12.85);
 
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
@@ -86,10 +98,15 @@ CREATE TABLE orders(
 	primary_bead INTEGER REFERENCES stock_bead(id),
 	secondary_bead INTEGER REFERENCES stock_bead(id),
 	center_piece INTEGER REFERENCES stock_center_piece(id),
-	crucifix INTEGER REFERENCES stock_crucifix(id)
+	crucifix INTEGER REFERENCES stock_crucifix(id),
+	image VARCHAR(128)
 );
 GRANT INSERT, SELECT ON orders TO db_manager;
 GRANT USAGE, SELECT, UPDATE ON orders_id_seq TO db_manager;
+
+INSERT INTO orders (primary_bead, secondary_bead, center_piece, crucifix, image) VALUES (2, 4, 3, 3, 'rosary3.jpg');
+INSERT INTO orders (primary_bead, secondary_bead, center_piece, crucifix, image) VALUES (1, 3, 2, 2, 'rosary2.jpg');
+INSERT INTO orders (primary_bead, secondary_bead, center_piece, crucifix, image) VALUES (1, 2, 1, 1, 'f_sword.PNG');
 
 DROP TABLE IF EXISTS user_orders;
 CREATE TABLE user_orders(
