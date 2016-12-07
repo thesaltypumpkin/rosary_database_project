@@ -3,11 +3,17 @@ import psycopg2.extras
 
 
 from flask import Flask, render_template, request, session, redirect, url_for
+from flask_socketio import SocketIO, emit
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_url_path='')
 app.secret_key = os.urandom(24).encode('hex')
+app.config['SECRET_KEY'] = 'secret!'
 
- 
+socketio = SocketIO(app)
+
+prayer = [{'text':'my mom'}, {'text':'my dad'}]
+
 def connect_to_dp(): 
     connectionString = 'dbname = rosarydb user = db_manager password = rosary host = localhost'
     print connectionString
@@ -16,6 +22,19 @@ def connect_to_dp():
     except: 
         print("Can't connect to database")
 
+@socketio.on('connect', namespace = '/rosary')
+def makeConnection(): 
+        print('connected')
+        for p in prayer:
+            print(p)
+            emit('prayer', p)
+            
+@socketio.on('message', namespace = '/rosary')
+def new_prayer(message): 
+    tmp = {'text': message}
+    print(tmp)
+    prayer.append(tmp)
+    emit('prayer', tmp, broadcast=True)
 
 @app.route('/')
 def mainIndex():
@@ -134,7 +153,14 @@ def admin():
     
     con = connect_to_dp()
     cur = con.cursor()
-    cur.execute("select payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name);")
+    cur.execute("select distinct payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name);")
+    results2 = cur.fetchall()
+    if (len(results2) / 2 == 0):
+        resultlen = len(results2) / 2;
+    else:
+        resultlen = len(results2) / 2 + 1;
+    print(resultlen)
+    cur.execute("select distinct payment.first_name, payment.last_name, payment.home_address, payment.city, payment.zipcode, payment.card_number, customorders.user_name, customorders.hail_mary, customorders.our_father, customorders.crucifix, customorders.center_piece, customorders.price from payment join customorders on (payment.user_name = customorders.user_name) limit %s;" % (resultlen))
     results = cur.fetchall()
     if request.method == 'POST':
         print("post admin")
@@ -150,7 +176,7 @@ def admin():
             print cur.mogrify("update stock_crucifix set quantity = quantity + %s where crucifix_type = '%s'" % (request.form['cx_amount'], request.form['cx_type']))
             cur.execute("update stock_crucifix set quantity = quantity + %s where crucifix_type = '%s'" % (request.form['cx_amount'], request.form['cx_type']))
             con.commit()
-    return render_template('Admin.html', user = user, results = results)
+    return render_template('Admin.html', user = user, results = results, resultlen = resultlen)
     
 
 @app.route('/account', methods=['GET', 'POST'])
@@ -186,7 +212,17 @@ def account():
         
     return render_template('createAccount.html', selectedMenu='account', firstname = firstName, lastname = lastName, pw = pw, username = userName, user = user)
    
-
+   
+@app.route('/review')
+def review():
+    user = ' '
+    if 'currentUser' in session: 
+        print "there is a currentuser"
+        user = session['currentUser']
+        print user
+    
+    return render_template('review.html')
+    
 # start the server
 if __name__ == '__main__':
-    app.run(host=os.getenv('IP', '0.0.0.0'), port =int(os.getenv('PORT', 8080)), debug=True)
+    socketio.run(app, host=os.getenv('IP', '0.0.0.0'), port =int(os.getenv('PORT', 8080)), debug=True)
