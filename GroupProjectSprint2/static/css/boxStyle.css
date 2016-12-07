@@ -5,7 +5,7 @@ transition: width 0.4s ease-in-out;
 }
 
 input[type=text]:focus{
-border:4px solid #555
+border: 4px solid #555;
 		background-color:#3CBC8D;
 }
 
