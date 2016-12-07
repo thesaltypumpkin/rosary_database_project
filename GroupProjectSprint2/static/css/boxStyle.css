@@ -33,3 +33,17 @@ table { border-collapse: separate; border-spacing: 5px; }
 th, td {
     padding: 10px;
 }
+
+body{
+padding-top:3pt;
+padding-bottom:5pt;
+padding-left:10pt;
+padding-right:6pt;
+}
+
+p{
+font-family:verdana;
+text-align:left;
+font-size:25;
+padding:3pt,5pt,10pt,6pt;
+}
