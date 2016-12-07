@@ -12,7 +12,7 @@ app.config['SECRET_KEY'] = 'secret!'
 
 socketio = SocketIO(app)
 
-prayer = [ {'text':'my mom'}, {'text':'my dad'}]
+prayer = [{'text':'my mom'}, {'text':'my dad'}]
 
 def connect_to_dp(): 
     connectionString = 'dbname = rosarydb user = db_manager password = rosary host = localhost'
@@ -24,7 +24,6 @@ def connect_to_dp():
 
 @socketio.on('connect', namespace = '/rosary')
 def makeConnection(): 
-        prayer = [ {'text':'my mom'}, {'text':'my dad'}]
         print('connected')
         for p in prayer:
             print(p)

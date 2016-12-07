@@ -4,7 +4,7 @@ rosary.controller('rosaryControler', function($scope){
     var socket = io.connect('https://' + document.domain + ':' + location.port + '/rosary');
     
     $scope.prayer = [];
-   
+    $scope.text = '';
     
     socket.on('prayer', function(p){ 
         console.log(p); 
