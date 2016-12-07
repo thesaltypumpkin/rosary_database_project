@@ -50,6 +50,12 @@ padding:3pt,5pt,10pt,6pt;
 }
 =======
 
+.carusel-control{
+position:absoulute;
+top:8%;
+display:inline-block;
+height:350px;
+}
 
 div.scroll {
     background-color: #F8F8F8;
